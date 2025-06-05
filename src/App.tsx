@@ -1,32 +1,28 @@
-import { Card, Input, Layout, Space, Typography } from "antd";
-import { EditOutlined, EllipsisOutlined } from "@ant-design/icons";
+import { Input, Layout, Space, Typography } from "antd";
 import "./App.css";
-import { folderKnowledges, knowledgeFolders } from "./utils/config";
-import { useState } from "react";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { KnowledgeProvider, useKnowledge } from "./contexts/GeneralContext";
+import KnowledgeFoldersList from "./components/KnowledgeFoldersList";
+import KnowledgesList from "./components/KnowledgesList";
 
 const { Header } = Layout;
 
 function App() {
-  const [folders, setFolders] = useState(knowledgeFolders);
-  const [knowledges, setKnowledges] = useState(folderKnowledges);
-  const [view, setView] = useState("folder");
+  const { setFolders, setKnowledges } = useKnowledge();
 
   function search(value: any) {
-    setFolders(
-      knowledgeFolders.filter((folder) =>
-        folder.title.includes(value.target.value)
-      )
+    setFolders((folders: any) =>
+      folders.filter((folder: any) => folder.title.includes(value.target.value))
     );
 
-    setKnowledges(
-      folderKnowledges.filter((knowledge) =>
+    setKnowledges((knowledges: any) =>
+      knowledges.filter((knowledge: any) =>
         knowledge.title.includes(value.target.value)
       )
     );
   }
-
   return (
-    <>
+    <Router>
       <Header
         style={{
           display: "flex",
@@ -56,59 +52,13 @@ function App() {
           display: "grid",
         }}
       >
-        {view === "folder" ? (
-          folders.map((folder, index) => (
-            <Card
-              title={folder.title}
-              variant="borderless"
-              actions={[
-                <EditOutlined key="edit" />,
-                <EllipsisOutlined
-                  key="ellipsis"
-                  onClick={() => setView("knowledge")}
-                />,
-              ]}
-              style={{ width: "80vw", marginTop: index === 0 ? 50 : 10 }}
-            >
-              <Typography.Paragraph ellipsis={{ rows: 1 }}>
-                {folder.description}
-              </Typography.Paragraph>
-            </Card>
-          ))
-        ) : view === "knowledge" ? (
-          knowledges.map((knowledge, index) => (
-            <Card
-              title={knowledge.title + " + " + knowledge.author}
-              variant="borderless"
-              actions={[
-                <EditOutlined key="edit" />,
-                <EllipsisOutlined
-                  key="ellipsis"
-                  onClick={() => setView("show")}
-                />,
-              ]}
-              style={{ width: "80vw", marginTop: index === 0 ? 50 : 10 }}
-            >
-              <Typography.Paragraph ellipsis={{ rows: 1 }}>
-                {knowledge.description}
-              </Typography.Paragraph>
-            </Card>
-          ))
-        ) : (
-          <Card
-            title={"Conhecimento - Gabriel"}
-            variant="borderless"
-            style={{ width: "80vw", marginTop: 50 }}
-          >
-            <Typography.Paragraph>
-              {
-                "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur animi ab expedita! Eaque, culpa eos earum vero fuga recusandae nesciunt tenetur dolor illum quod praesentium commodi, facere mollitia soluta nobis! Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur animi ab expedita! Eaque, culpa eos earum vero fuga recusandae nesciunt tenetur dolor illum quod praesentium commodi, facere mollitia soluta nobis! Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur animi ab expedita! Eaque, culpa eos earum vero fuga recusandae nesciunt tenetur dolor illum quod praesentium commodi, facere mollitia soluta nobis! Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur animi ab expedita! Eaque, culpa eos earum vero fuga recusandae nesciunt tenetur dolor illum quod praesentium commodi, facere mollitia soluta nobis! Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur animi ab expedita! Eaque, culpa eos earum vero fuga recusandae nesciunt tenetur dolor illum quod praesentium commodi, facere mollitia soluta nobis!"
-              }
-            </Typography.Paragraph>
-          </Card>
-        )}
+        <Routes>
+          <Route path="/" element={<KnowledgeFoldersList />} />
+          <Route path="/folder" element={<KnowledgesList />} />
+          {/*<Route path="*" element={<NotFound />} /> */}
+        </Routes>
       </Space>
-    </>
+    </Router>
   );
 }
 
