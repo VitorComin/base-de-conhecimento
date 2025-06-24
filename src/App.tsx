@@ -4,6 +4,7 @@ import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { KnowledgeProvider, useKnowledge } from "./contexts/GeneralContext";
 import KnowledgeFoldersList from "./components/KnowledgeFoldersList";
 import KnowledgesList from "./components/KnowledgesList";
+import Knowledge from "./components/Knowledge";
 
 const { Header } = Layout;
 
@@ -54,8 +55,8 @@ function App() {
       >
         <Routes>
           <Route path="/" element={<KnowledgeFoldersList />} />
-          <Route path="/folder" element={<KnowledgesList />} />
-          {/*<Route path="*" element={<NotFound />} /> */}
+          <Route path="/folder/show" element={<KnowledgesList />} />
+          <Route path="/knowledge/show" element={<Knowledge />} />
         </Routes>
       </Space>
     </Router>

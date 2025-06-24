@@ -13,7 +13,10 @@ const KnowledgeFoldersList: React.FC = () => {
       variant="borderless"
       actions={[
         <EditOutlined key="edit" />,
-        <EllipsisOutlined key="ellipsis" onClick={() => navigate("/folder")} />,
+        <EllipsisOutlined
+          key="ellipsis"
+          onClick={() => navigate("/folder/show")}
+        />,
       ]}
       style={{ width: "80vw", marginTop: index === 0 ? 50 : 10 }}
     >
