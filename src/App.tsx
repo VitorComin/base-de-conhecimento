@@ -1,36 +1,15 @@
-import { Input, Layout, Space, Typography } from "antd";
+import { Space } from "antd";
 import "./App.css";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import { useKnowledge } from "./contexts/GeneralContext";
 import KnowledgeFoldersList from "./components/KnowledgeFoldersList";
 import KnowledgesList from "./components/KnowledgesList";
 import Knowledge from "./components/Knowledge";
-
-const { Header } = Layout;
+import LayoutHeader from "./components/LayoutHeader";
 
 function App() {
-  const { handleSearch } = useKnowledge();
-
   return (
     <Router>
-      <Header
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          height: "10vh",
-        }}
-      >
-        <Typography.Title
-          style={{
-            color: "white",
-            margin: 0,
-          }}
-        >
-          Knowledges
-        </Typography.Title>
-        <Input style={{ width: 200, height: 40 }} onChange={handleSearch} />
-      </Header>
+      <LayoutHeader />
       <Space
         style={{
           width: "100vw",

@@ -1,8 +1,8 @@
 import { IFolder } from "../types/KnowledgeTypes";
 
 let knowledgeFolders: IFolder[] = [
-  { id: 1, name: "Pasta 1", description: "eita" },
-  { id: 2, name: "Pasta 2", description: "eita 2" },
+  { id: 1, title: "Pasta 1", description: "eita" },
+  { id: 2, title: "Pasta 2", description: "eita 2" },
 ];
 
 let nextId = 3;

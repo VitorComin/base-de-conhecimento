@@ -50,13 +50,13 @@ export function KnowledgeProvider({ children }: KnowledgeProviderProps) {
   function handleSearch(value: any) {
     setFolders(
       originalFolders.filter((folder: any) =>
-        folder.title.includes(value.target.value)
+        folder.title.toLowerCase().includes(value.target.value.toLowerCase())
       )
     );
 
     setKnowledges(
       originalKnowledges.filter((knowledge: any) =>
-        knowledge.title.includes(value.target.value)
+        knowledge.title.toLowerCase().includes(value.target.value.toLowerCase())
       )
     );
   }
