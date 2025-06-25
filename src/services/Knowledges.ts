@@ -1,10 +1,34 @@
 import { IKnowledge } from "../types/KnowledgeTypes";
 
 let knowledges: IKnowledge[] = [
-  { id: 1, title: "conhecimento da pasta 1", folderId: 1 },
-  { id: 2, title: "conhecimento da pasta 1 (1)", folderId: 1 },
-  { id: 3, title: "conhecimento da pasta 2 ", folderId: 2 },
-  { id: 4, title: "conhecimento da pasta 2 (1)", folderId: 2 },
+  {
+    id: 1,
+    title: "conhecimento da pasta 1",
+    folderId: 1,
+    author: "Gabriel",
+    description: "descrição",
+  },
+  {
+    id: 2,
+    title: "conhecimento da pasta 1 (1)",
+    folderId: 1,
+    author: "Vitor",
+    description: "descrição",
+  },
+  {
+    id: 3,
+    title: "conhecimento da pasta 2 ",
+    folderId: 2,
+    author: "Daniel",
+    description: "descrição",
+  },
+  {
+    id: 4,
+    title: "conhecimento da pasta 2 (1)",
+    folderId: 2,
+    author: "Patrick",
+    description: "descrição",
+  },
 ];
 
 let nextId = 5;

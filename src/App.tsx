@@ -44,8 +44,8 @@ function App() {
       >
         <Routes>
           <Route path="/" element={<KnowledgeFoldersList />} />
-          <Route path="/folder/show" element={<KnowledgesList />} />
-          <Route path="/knowledge/show" element={<Knowledge />} />
+          <Route path="/folder/show/:id" element={<KnowledgesList />} />
+          <Route path="/knowledge/show/:id" element={<Knowledge />} />
         </Routes>
       </Space>
     </Router>

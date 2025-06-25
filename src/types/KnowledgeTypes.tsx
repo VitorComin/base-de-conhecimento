@@ -8,4 +8,6 @@ export interface IKnowledge {
   id: number;
   title: string;
   folderId: number;
+  description: string;
+  author: string;
 }

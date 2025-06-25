@@ -5,7 +5,6 @@ import {
   ReactNode,
   useEffect,
 } from "react";
-import { folderKnowledges, knowledgeFolders } from "../utils/config";
 import { getFolders } from "../services/KnowledgeFolders";
 import { getKnowledges } from "../services/Knowledges";
 
@@ -15,6 +14,8 @@ interface KnowledgeContextType {
   knowledges: any;
   setKnowledges: any;
   handleSearch: any;
+  originalFolders: any;
+  originalKnowledges: any;
 }
 
 const KnowledgeContext = createContext<KnowledgeContextType | undefined>(
@@ -62,7 +63,15 @@ export function KnowledgeProvider({ children }: KnowledgeProviderProps) {
 
   return (
     <KnowledgeContext.Provider
-      value={{ folders, setFolders, knowledges, setKnowledges, handleSearch }}
+      value={{
+        folders,
+        setFolders,
+        knowledges,
+        setKnowledges,
+        handleSearch,
+        originalFolders,
+        originalKnowledges,
+      }}
     >
       {children}
     </KnowledgeContext.Provider>

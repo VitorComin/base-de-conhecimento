@@ -1,20 +1,34 @@
-import { Card, Typography } from "antd";
+import { Card, Spin, Typography } from "antd";
+import { useParams } from "react-router-dom";
+import { useKnowledge } from "../../contexts/GeneralContext";
+import { useEffect, useState } from "react";
 
 const Knowledge: React.FC = () => {
-  return (
+  const { id } = useParams<{ id: any }>();
+  const { knowledges } = useKnowledge();
+  const [knowledge, setKnowledge] = useState<any>(
+    knowledges?.find((item: any) => item?.id == id)
+  );
+
+  useEffect(() => {
+    if (id) {
+      setKnowledge(knowledges?.find((item: any) => item?.id == id));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, knowledges]);
+
+  return knowledge ? (
     <>
       <Card
-        title={"Conhecimento - Gabriel"}
+        title={knowledge?.title}
         variant="borderless"
         style={{ width: "80vw", marginTop: 50 }}
       >
-        <Typography.Paragraph>
-          {
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur animi ab expedita! Eaque, culpa eos earum vero fuga recusandae nesciunt tenetur dolor illum quod praesentium commodi, facere mollitia soluta nobis! Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur animi ab expedita! Eaque, culpa eos earum vero fuga recusandae nesciunt tenetur dolor illum quod praesentium commodi, facere mollitia soluta nobis! Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur animi ab expedita! Eaque, culpa eos earum vero fuga recusandae nesciunt tenetur dolor illum quod praesentium commodi, facere mollitia soluta nobis! Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur animi ab expedita! Eaque, culpa eos earum vero fuga recusandae nesciunt tenetur dolor illum quod praesentium commodi, facere mollitia soluta nobis! Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur animi ab expedita! Eaque, culpa eos earum vero fuga recusandae nesciunt tenetur dolor illum quod praesentium commodi, facere mollitia soluta nobis!"
-          }
-        </Typography.Paragraph>
+        <Typography.Paragraph>{knowledge?.description}</Typography.Paragraph>
       </Card>
     </>
+  ) : (
+    <Spin style={{ margin: 50, padding: 50 }} />
   );
 };
 
