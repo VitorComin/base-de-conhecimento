@@ -5,6 +5,8 @@ import KnowledgeFoldersList from "./components/KnowledgeFoldersList";
 import KnowledgesList from "./components/KnowledgesList";
 import Knowledge from "./components/Knowledge";
 import LayoutHeader from "./components/LayoutHeader";
+import KnowledgeCreate from "./components/KnowledgeCreate";
+import FolderCreate from "./components/FolderCreate";
 
 function App() {
   return (
@@ -25,6 +27,10 @@ function App() {
           <Route path="/" element={<KnowledgeFoldersList />} />
           <Route path="/folder/show/:id" element={<KnowledgesList />} />
           <Route path="/knowledge/show/:id" element={<Knowledge />} />
+          <Route path="folder/create/" element={<FolderCreate />} />
+          <Route path="folder/create/:id" element={<FolderCreate />} />
+          <Route path="knowledge/create/" element={<KnowledgeCreate />} />
+          <Route path="knowledge/create/:id" element={<KnowledgeCreate />} />
         </Routes>
       </Space>
     </Router>

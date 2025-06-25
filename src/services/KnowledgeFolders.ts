@@ -16,7 +16,10 @@ export function getFolderById(id: number): Promise<IFolder | undefined> {
 }
 
 export function createFolder(data: Omit<IFolder, "id">): Promise<IFolder> {
-  const newFolder: IFolder = { id: nextId++, ...data };
+  const newFolder: IFolder = {
+    id: Math.floor(Math.random() * 1000000),
+    ...data,
+  };
   knowledgeFolders.push(newFolder);
   return Promise.resolve(newFolder);
 }
