@@ -7,7 +7,7 @@ const KnowledgeFoldersList: React.FC = () => {
   const { folders } = useKnowledge();
   const navigate = useNavigate();
 
-  return folders.map((folder: any, index: any) => (
+  return folders?.map((folder: any, index: any) => (
     <Card
       title={folder.title}
       variant="borderless"

@@ -1,7 +1,7 @@
 import { Input, Layout, Space, Typography } from "antd";
 import "./App.css";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import { KnowledgeProvider, useKnowledge } from "./contexts/GeneralContext";
+import { useKnowledge } from "./contexts/GeneralContext";
 import KnowledgeFoldersList from "./components/KnowledgeFoldersList";
 import KnowledgesList from "./components/KnowledgesList";
 import Knowledge from "./components/Knowledge";
@@ -9,19 +9,8 @@ import Knowledge from "./components/Knowledge";
 const { Header } = Layout;
 
 function App() {
-  const { setFolders, setKnowledges } = useKnowledge();
+  const { handleSearch } = useKnowledge();
 
-  function search(value: any) {
-    setFolders((folders: any) =>
-      folders.filter((folder: any) => folder.title.includes(value.target.value))
-    );
-
-    setKnowledges((knowledges: any) =>
-      knowledges.filter((knowledge: any) =>
-        knowledge.title.includes(value.target.value)
-      )
-    );
-  }
   return (
     <Router>
       <Header
@@ -40,7 +29,7 @@ function App() {
         >
           Knowledges
         </Typography.Title>
-        <Input style={{ width: 200, height: 40 }} onChange={search} />
+        <Input style={{ width: 200, height: 40 }} onChange={handleSearch} />
       </Header>
       <Space
         style={{

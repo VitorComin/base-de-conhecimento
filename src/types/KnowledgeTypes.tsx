@@ -1,6 +1,7 @@
 export interface IFolder {
   id: number;
   name: string;
+  description: string;
 }
 
 export interface IKnowledge {
