@@ -18,6 +18,7 @@ const KnowledgesList: React.FC = () => {
     knowledges,
     setKnowledges,
     originalKnowledges,
+    originalFolders,
     setOriginalKnowledges,
   } = useKnowledge();
 
@@ -45,12 +46,15 @@ const KnowledgesList: React.FC = () => {
 
   return (
     <>
+      <Typography.Title>
+        {originalFolders.find((item: any) => item.id == id).title}
+      </Typography.Title>
       <Button
         icon={<PlusOutlined />}
         type="primary"
         size="large"
         onClick={() => navigate(`/knowledge/create`)}
-        style={{ width: "80vw", marginTop: 50 }}
+        style={{ width: "80vw", marginTop: 30 }}
       >
         Criar Conhecimento
       </Button>
@@ -58,7 +62,14 @@ const KnowledgesList: React.FC = () => {
         ?.filter((knowledge: any) => knowledge.folderId == id)
         ?.map((knowledge: any, index: any) => (
           <Card
-            title={knowledge.author + " - " + knowledge.title}
+            title={
+              <Typography.Text
+                onClick={() => navigate(`/knowledge/show/${knowledge.id}`)}
+                style={{ cursor: "pointer" }}
+              >
+                {knowledge.author + " - " + knowledge.title}
+              </Typography.Text>
+            }
             variant="borderless"
             key={index}
             actions={[
@@ -70,12 +81,12 @@ const KnowledgesList: React.FC = () => {
                 key="delete"
                 onClick={() => handleDelete(knowledge.id)}
               />,
-              <EllipsisOutlined
-                key="ellipsis"
-                onClick={() => navigate(`/knowledge/show/${knowledge.id}`)}
-              />,
             ]}
-            style={{ width: "80vw", marginTop: index === 0 ? 50 : 10 }}
+            style={{
+              width: "80vw",
+              marginTop: index === 0 ? 50 : 10,
+              marginBottom: index === knowledges?.length - 1 ? 30 : 0,
+            }}
           >
             <Typography.Paragraph ellipsis={{ rows: 1 }}>
               {knowledge.description}

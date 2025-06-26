@@ -68,7 +68,14 @@ const KnowledgeFoldersList: React.FC = () => {
       </Button>{" "}
       {folders?.map((folder: any, index: any) => (
         <Card
-          title={folder.title}
+          title={
+            <Typography.Text
+              onClick={() => navigate(`/folder/show/${folder.id}`)}
+              style={{ cursor: "pointer" }}
+            >
+              {folder.title}
+            </Typography.Text>
+          }
           variant="borderless"
           actions={[
             <EditOutlined
@@ -79,14 +86,11 @@ const KnowledgeFoldersList: React.FC = () => {
               key="edit"
               onClick={() => handleDelete(folder.id)}
             />,
-            <EllipsisOutlined
-              key="ellipsis"
-              onClick={() => navigate(`/folder/show/${folder.id}`)}
-            />,
           ]}
           style={{
             width: "80vw",
             marginTop: index === 0 ? 50 : 10,
+            marginBottom: index === folders?.length - 1 ? 30 : 0,
           }}
         >
           <Typography.Paragraph ellipsis={{ rows: 1 }}>
