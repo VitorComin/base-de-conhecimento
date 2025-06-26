@@ -47,7 +47,7 @@ const KnowledgesList: React.FC = () => {
   return (
     <>
       <Typography.Title>
-        {originalFolders.find((item: any) => item.id == id).title}
+        {originalFolders?.find((item: any) => item.id == id).title}
       </Typography.Title>
       <Button
         icon={<PlusOutlined />}

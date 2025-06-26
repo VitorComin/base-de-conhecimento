@@ -32,29 +32,30 @@ const KnowledgeCreate: React.FC = () => {
         messageApi.error("Conhecimento não encontrado.");
       }
       navigate("/");
-    }
-    try {
-      const knowledgeCreated = await createKnowledge(values);
-      setOriginalKnowledges((knowledges: any) => [
-        ...knowledges,
-        knowledgeCreated,
-      ]);
-      messageApi.open({
-        type: "success",
-        content: "Pasta criada!",
-      });
-      navigate("/");
-    } catch (error) {
-      messageApi.open({
-        type: "error",
-        content: `Erro na criação: ${error}`,
-      });
+    } else {
+      try {
+        const knowledgeCreated = await createKnowledge(values);
+        setOriginalKnowledges((knowledges: any) => [
+          ...knowledges,
+          knowledgeCreated,
+        ]);
+        messageApi.open({
+          type: "success",
+          content: "Pasta criada!",
+        });
+        navigate("/");
+      } catch (error) {
+        messageApi.open({
+          type: "error",
+          content: `Erro na criação: ${error}`,
+        });
+      }
     }
   };
 
   useEffect(() => {
     if (id) {
-      const knowledge = originalKnowledges.find(
+      const knowledge = originalKnowledges?.find(
         (knowledge: any) => knowledge.id == id
       );
 
