@@ -16,6 +16,8 @@ interface KnowledgeContextType {
   handleSearch: any;
   originalFolders: any;
   originalKnowledges: any;
+  setOriginalFolders: any;
+  setOriginalKnowledges: any;
 }
 
 const KnowledgeContext = createContext<KnowledgeContextType | undefined>(
@@ -70,6 +72,8 @@ export function KnowledgeProvider({ children }: KnowledgeProviderProps) {
         setKnowledges,
         handleSearch,
         originalFolders,
+        setOriginalFolders,
+        setOriginalKnowledges,
         originalKnowledges,
       }}
     >

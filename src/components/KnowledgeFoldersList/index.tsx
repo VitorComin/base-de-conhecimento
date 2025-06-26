@@ -1,21 +1,33 @@
 import { Button, Card, Spin, Typography } from "antd";
 import { useKnowledge } from "../../contexts/GeneralContext";
 import {
+  DeleteOutlined,
   EditOutlined,
   EllipsisOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { deleteFolder } from "../../services/KnowledgeFolders";
 
 const KnowledgeFoldersList: React.FC = () => {
-  const { folders, setFolders, originalFolders } = useKnowledge();
+  const { folders, setFolders, originalFolders, setOriginalFolders } =
+    useKnowledge();
   const navigate = useNavigate();
 
   useEffect(() => {
     setFolders(originalFolders);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [originalFolders]);
+
+  const handleDelete = async (id: number) => {
+    const ok = await deleteFolder(id);
+    if (ok) {
+      setOriginalFolders((prev: any[]) => prev.filter((f) => f.id !== id));
+    } else {
+      alert("Erro ao deletar pasta.");
+    }
+  };
 
   return folders ? (
     <>
@@ -36,6 +48,10 @@ const KnowledgeFoldersList: React.FC = () => {
             <EditOutlined
               key="edit"
               onClick={() => navigate(`/folder/create/${folder.id}`)}
+            />,
+            <DeleteOutlined
+              key="edit"
+              onClick={() => handleDelete(folder.id)}
             />,
             <EllipsisOutlined
               key="ellipsis"

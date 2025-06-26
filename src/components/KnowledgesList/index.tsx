@@ -1,5 +1,6 @@
 import { Button, Card, Typography } from "antd";
 import {
+  DeleteOutlined,
   EditOutlined,
   EllipsisOutlined,
   PlusOutlined,
@@ -7,11 +8,17 @@ import {
 import { useKnowledge } from "../../contexts/GeneralContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
+import { deleteKnowledge } from "../../services/Knowledges";
 
 const KnowledgesList: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: any }>();
-  const { knowledges, setKnowledges, originalKnowledges } = useKnowledge();
+  const {
+    knowledges,
+    setKnowledges,
+    originalKnowledges,
+    setOriginalKnowledges,
+  } = useKnowledge();
 
   useEffect(() => {
     if (!id || !originalKnowledges) return;
@@ -19,6 +26,17 @@ const KnowledgesList: React.FC = () => {
     setKnowledges(originalKnowledges);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, originalKnowledges]);
+
+  const handleDelete = async (knowledgeId: number) => {
+    const ok = await deleteKnowledge(knowledgeId);
+    if (ok) {
+      setOriginalKnowledges((prev: any[]) =>
+        prev.filter((k) => k.id !== knowledgeId)
+      );
+    } else {
+      alert("Erro ao deletar conhecimento.");
+    }
+  };
 
   return (
     <>
@@ -42,6 +60,10 @@ const KnowledgesList: React.FC = () => {
               <EditOutlined
                 key="edit"
                 onClick={() => navigate(`/knowledge/create/${knowledge.id}`)}
+              />,
+              <DeleteOutlined
+                key="delete"
+                onClick={() => handleDelete(knowledge.id)}
               />,
               <EllipsisOutlined
                 key="ellipsis"
