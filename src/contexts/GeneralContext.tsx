@@ -49,17 +49,37 @@ export function KnowledgeProvider({ children }: KnowledgeProviderProps) {
     fetchData();
   }, []);
 
-  function handleSearch(value: any) {
+  function handleSearch(event: any) {
+    const searchValue = event.target.value.toLowerCase();
+
     setFolders(
-      originalFolders.filter((folder: any) =>
-        folder.title.toLowerCase().includes(value.target.value.toLowerCase())
-      )
+      originalFolders.filter((folder: any) => {
+        const titleMatches = folder.title?.toLowerCase().includes(searchValue);
+
+        const tagsMatches = Array.isArray(folder.tags)
+          ? folder.tags.some((tag: string) =>
+              tag.toLowerCase().includes(searchValue)
+            )
+          : false;
+
+        return titleMatches || tagsMatches;
+      })
     );
 
     setKnowledges(
-      originalKnowledges.filter((knowledge: any) =>
-        knowledge.title.toLowerCase().includes(value.target.value.toLowerCase())
-      )
+      originalKnowledges.filter((knowledge: any) => {
+        const titleMatches = knowledge.title
+          ?.toLowerCase()
+          .includes(searchValue);
+
+        const tagsMatches = Array.isArray(knowledge.tags)
+          ? knowledge.tags.some((tag: string) =>
+              tag.toLowerCase().includes(searchValue)
+            )
+          : false;
+
+        return titleMatches || tagsMatches;
+      })
     );
   }
 
