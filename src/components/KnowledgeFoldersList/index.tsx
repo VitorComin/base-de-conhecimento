@@ -1,4 +1,4 @@
-import { Button, Card, Spin, Typography } from "antd";
+import { Button, Card, message, Spin, Typography } from "antd";
 import { useKnowledge } from "../../contexts/GeneralContext";
 import {
   DeleteOutlined,
@@ -9,10 +9,18 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { deleteFolder } from "../../services/KnowledgeFolders";
+import { deleteKnowledge } from "../../services/Knowledges";
 
 const KnowledgeFoldersList: React.FC = () => {
-  const { folders, setFolders, originalFolders, setOriginalFolders } =
-    useKnowledge();
+  const {
+    folders,
+    setFolders,
+    originalFolders,
+    setOriginalFolders,
+    originalKnowledges,
+    setOriginalKnowledges,
+  } = useKnowledge();
+  const [messageApi] = message.useMessage();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,7 +31,25 @@ const KnowledgeFoldersList: React.FC = () => {
   const handleDelete = async (id: number) => {
     const ok = await deleteFolder(id);
     if (ok) {
+      const folderKnowledges = originalKnowledges.filter(
+        (item: any) => item.folderId == id
+      );
+
+      if (folderKnowledges) {
+        folderKnowledges.forEach(async (item: any) => {
+          const ok = await deleteKnowledge(item.id);
+          if (ok) {
+            setOriginalKnowledges((prev: any[]) =>
+              prev.filter((k) => k.id != item.id)
+            );
+          }
+        });
+      }
       setOriginalFolders((prev: any[]) => prev.filter((f) => f.id !== id));
+      messageApi.open({
+        type: "success",
+        content: "Pasta (com seus conhecimentos) deletada!",
+      });
     } else {
       alert("Erro ao deletar pasta.");
     }

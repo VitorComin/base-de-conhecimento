@@ -1,4 +1,4 @@
-import { Button, Card, Typography } from "antd";
+import { Button, Card, message, Typography } from "antd";
 import {
   DeleteOutlined,
   EditOutlined,
@@ -12,6 +12,7 @@ import { deleteKnowledge } from "../../services/Knowledges";
 
 const KnowledgesList: React.FC = () => {
   const navigate = useNavigate();
+  const [messageApi] = message.useMessage();
   const { id } = useParams<{ id: any }>();
   const {
     knowledges,
@@ -33,6 +34,10 @@ const KnowledgesList: React.FC = () => {
       setOriginalKnowledges((prev: any[]) =>
         prev.filter((k) => k.id !== knowledgeId)
       );
+      messageApi.open({
+        type: "success",
+        content: "Conhecimento deletado!",
+      });
     } else {
       alert("Erro ao deletar conhecimento.");
     }
