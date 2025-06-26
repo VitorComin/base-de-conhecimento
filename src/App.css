@@ -3,3 +3,13 @@ body {
   background-color: rgb(236, 236, 236);
   overflow: hidden;
 }
+
+@media (max-width: 999px) {
+  .header-title {
+    font-size: 24px !important;
+  }
+
+  .header-input {
+    display: none;
+  }
+}

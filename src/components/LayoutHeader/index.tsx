@@ -18,6 +18,7 @@ const LayoutHeader: React.FC = () => {
       }}
     >
       <Typography.Title
+        className="header-title"
         style={{
           color: "white",
           margin: 0,
@@ -25,9 +26,13 @@ const LayoutHeader: React.FC = () => {
         }}
         onClick={() => navigate("/")}
       >
-        Knowledges
+        Conhecimentos
       </Typography.Title>
-      <Input style={{ width: 200, height: 40 }} onChange={handleSearch} />
+      <Input
+        className="header-input"
+        style={{ width: 200, height: 40 }}
+        onChange={handleSearch}
+      />
     </Header>
   );
 };
