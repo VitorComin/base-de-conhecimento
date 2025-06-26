@@ -1,15 +1,18 @@
 import { CheckOutlined } from "@ant-design/icons";
 import { Button, Form, Input, message, Select } from "antd";
-import { useNavigate } from "react-router-dom";
-import { createKnowledge } from "../../services/Knowledges";
+import { useNavigate, useParams } from "react-router-dom";
+import { createKnowledge, updateKnowledge } from "../../services/Knowledges";
 import { useKnowledge } from "../../contexts/GeneralContext";
+import { useEffect } from "react";
 
 const { TextArea } = Input;
 
 const KnowledgeCreate: React.FC = () => {
-  const { originalFolders } = useKnowledge();
+  const { originalFolders, originalKnowledges } = useKnowledge();
   const [messageApi] = message.useMessage();
   const navigate = useNavigate();
+  const [form] = Form.useForm();
+  const { id } = useParams();
 
   const onFinish = async (values: {
     title: string;
@@ -17,6 +20,15 @@ const KnowledgeCreate: React.FC = () => {
     author: string;
     description: string;
   }) => {
+    if (id) {
+      const updated = await updateKnowledge(Number(id), values);
+      if (updated) {
+        messageApi.success("Conhecimento atualizado com sucesso!");
+      } else {
+        messageApi.error("Conhecimento não encontrado.");
+      }
+      navigate("/");
+    }
     try {
       await createKnowledge(values);
       messageApi.open({
@@ -32,8 +44,24 @@ const KnowledgeCreate: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (id) {
+      const knowledge = originalKnowledges.find(
+        (knowledge: any) => knowledge.id == id
+      );
+
+      form.setFieldsValue({
+        title: knowledge.title,
+        description: knowledge.description,
+        folderId: knowledge.folderId,
+        author: knowledge.author,
+      });
+    }
+  });
+
   return (
     <Form
+      form={form}
       layout="vertical"
       style={{ marginTop: "10vh", width: "50vw" }}
       onFinish={onFinish}
@@ -87,7 +115,7 @@ const KnowledgeCreate: React.FC = () => {
           type="primary"
           htmlType="submit"
         >
-          Criar
+          {id ? "Editar" : "Criar"}
         </Button>
       </Form.Item>
     </Form>

@@ -1,30 +1,58 @@
 import { CheckOutlined } from "@ant-design/icons";
 import { Button, Form, Input, message } from "antd";
-import { createFolder } from "../../services/KnowledgeFolders";
-import { useNavigate } from "react-router-dom";
+import { createFolder, updateFolder } from "../../services/KnowledgeFolders";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useKnowledge } from "../../contexts/GeneralContext";
 
 const FolderCreate: React.FC = () => {
+  const { originalFolders } = useKnowledge();
   const [messageApi] = message.useMessage();
   const navigate = useNavigate();
+  const [form] = Form.useForm();
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (id) {
+      const folder = originalFolders?.find((folder: any) => folder.id == id);
+      if (folder) {
+        form.setFieldsValue({
+          title: folder.title,
+          description: folder.description,
+        });
+      }
+    }
+  });
 
   const onFinish = async (values: { title: string; description: string }) => {
-    try {
-      await createFolder(values);
-      messageApi.open({
-        type: "success",
-        content: "Pasta criada!",
-      });
+    if (id) {
+      const updated = await updateFolder(Number(id), values);
+      if (updated) {
+        messageApi.success("Pasta atualizada!");
+      } else {
+        messageApi.error("Pasta não encontrada.");
+      }
       navigate("/");
-    } catch (error) {
-      messageApi.open({
-        type: "error",
-        content: `Erro na criação: ${error}`,
-      });
+    } else {
+      try {
+        await createFolder(values);
+        messageApi.open({
+          type: "success",
+          content: "Pasta criada!",
+        });
+        navigate("/");
+      } catch (error) {
+        messageApi.open({
+          type: "error",
+          content: `Erro na criação: ${error}`,
+        });
+      }
     }
   };
 
   return (
     <Form
+      form={form}
       layout="vertical"
       style={{ marginTop: "20vh", width: "50vw" }}
       onFinish={onFinish}
@@ -55,7 +83,7 @@ const FolderCreate: React.FC = () => {
           type="primary"
           htmlType="submit"
         >
-          Criar
+          {id ? "Editar" : "Criar"}
         </Button>
       </Form.Item>
     </Form>

@@ -39,7 +39,10 @@ const KnowledgesList: React.FC = () => {
             variant="borderless"
             key={index}
             actions={[
-              <EditOutlined key="edit" />,
+              <EditOutlined
+                key="edit"
+                onClick={() => navigate(`/knowledge/create/${knowledge.id}`)}
+              />,
               <EllipsisOutlined
                 key="ellipsis"
                 onClick={() => navigate(`/knowledge/show/${knowledge.id}`)}
@@ -52,7 +55,6 @@ const KnowledgesList: React.FC = () => {
             </Typography.Paragraph>
           </Card>
         ))}
-      ;
     </>
   );
 };

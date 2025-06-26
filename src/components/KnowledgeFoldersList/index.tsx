@@ -33,13 +33,19 @@ const KnowledgeFoldersList: React.FC = () => {
           title={folder.title}
           variant="borderless"
           actions={[
-            <EditOutlined key="edit" />,
+            <EditOutlined
+              key="edit"
+              onClick={() => navigate(`/folder/create/${folder.id}`)}
+            />,
             <EllipsisOutlined
               key="ellipsis"
               onClick={() => navigate(`/folder/show/${folder.id}`)}
             />,
           ]}
-          style={{ width: "80vw", marginTop: index === 0 ? 50 : 10 }}
+          style={{
+            width: "80vw",
+            marginTop: index === 0 ? 50 : 10,
+          }}
         >
           <Typography.Paragraph ellipsis={{ rows: 1 }}>
             {folder.description}
