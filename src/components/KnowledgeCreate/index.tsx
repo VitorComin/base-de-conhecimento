@@ -8,7 +8,8 @@ import { useEffect } from "react";
 const { TextArea } = Input;
 
 const KnowledgeCreate: React.FC = () => {
-  const { originalFolders, originalKnowledges } = useKnowledge();
+  const { originalFolders, originalKnowledges, setOriginalKnowledges } =
+    useKnowledge();
   const [messageApi] = message.useMessage();
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -22,6 +23,9 @@ const KnowledgeCreate: React.FC = () => {
   }) => {
     if (id) {
       const updated = await updateKnowledge(Number(id), values);
+      setOriginalKnowledges((knowledges: any[]) =>
+        knowledges.map((k) => (k.id === updated?.id ? updated : k))
+      );
       if (updated) {
         messageApi.success("Conhecimento atualizado com sucesso!");
       } else {
@@ -30,7 +34,11 @@ const KnowledgeCreate: React.FC = () => {
       navigate("/");
     }
     try {
-      await createKnowledge(values);
+      const knowledgeCreated = await createKnowledge(values);
+      setOriginalKnowledges((knowledges: any) => [
+        ...knowledges,
+        knowledgeCreated,
+      ]);
       messageApi.open({
         type: "success",
         content: "Pasta criada!",

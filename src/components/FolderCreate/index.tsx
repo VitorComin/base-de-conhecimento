@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useKnowledge } from "../../contexts/GeneralContext";
 
 const FolderCreate: React.FC = () => {
-  const { originalFolders } = useKnowledge();
+  const { originalFolders, setOriginalFolders } = useKnowledge();
   const [messageApi] = message.useMessage();
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -27,6 +27,9 @@ const FolderCreate: React.FC = () => {
   const onFinish = async (values: { title: string; description: string }) => {
     if (id) {
       const updated = await updateFolder(Number(id), values);
+      setOriginalFolders((folders: any[]) =>
+        folders.map((folder) => (folder.id === updated?.id ? updated : folder))
+      );
       if (updated) {
         messageApi.success("Pasta atualizada!");
       } else {
@@ -35,7 +38,8 @@ const FolderCreate: React.FC = () => {
       navigate("/");
     } else {
       try {
-        await createFolder(values);
+        const folderCreated = await createFolder(values);
+        setOriginalFolders((folders: any) => [...folders, folderCreated]);
         messageApi.open({
           type: "success",
           content: "Pasta criada!",
