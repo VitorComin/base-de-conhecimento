@@ -62,6 +62,7 @@ const KnowledgeCreate: React.FC = () => {
       form.setFieldsValue({
         title: knowledge.title,
         description: knowledge.description,
+        tags: knowledge.tags,
         folderId: knowledge.folderId,
         author: knowledge.author,
       });
@@ -96,6 +97,20 @@ const KnowledgeCreate: React.FC = () => {
             label: folder.title,
             value: folder.id,
           }))}
+        />
+      </Form.Item>
+      <Form.Item
+        name="tags"
+        label="Tags"
+        required
+        style={{ width: "100%" }}
+        rules={[{ required: true, message: "As tags são obrigatórias." }]}
+      >
+        <Select
+          mode="tags"
+          style={{ width: "100%" }}
+          placeholder="Tags Mode"
+          options={[]}
         />
       </Form.Item>
       <Form.Item

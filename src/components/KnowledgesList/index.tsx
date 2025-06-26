@@ -1,4 +1,4 @@
-import { Button, Card, message, Typography } from "antd";
+import { Button, Card, message, Tag, Typography } from "antd";
 import {
   DeleteOutlined,
   EditOutlined,
@@ -88,6 +88,12 @@ const KnowledgesList: React.FC = () => {
               marginBottom: index === knowledges?.length - 1 ? 30 : 0,
             }}
           >
+            {Array.isArray(knowledge?.tags) &&
+              knowledge.tags.map((tag: string) => (
+                <Tag color="volcano" key={tag} style={{ marginBottom: 15 }}>
+                  {tag}
+                </Tag>
+              ))}
             <Typography.Paragraph ellipsis={{ rows: 1 }}>
               {knowledge.description}
             </Typography.Paragraph>

@@ -1,4 +1,4 @@
-import { Button, Card, message, Spin, Typography } from "antd";
+import { Button, Card, message, Spin, Tag, Typography } from "antd";
 import { useKnowledge } from "../../contexts/GeneralContext";
 import {
   DeleteOutlined,
@@ -93,6 +93,12 @@ const KnowledgeFoldersList: React.FC = () => {
             marginBottom: index === folders?.length - 1 ? 30 : 0,
           }}
         >
+          {Array.isArray(folder?.tags) &&
+            folder.tags.map((tag: string) => (
+              <Tag color="volcano" key={tag} style={{ marginBottom: 15 }}>
+                {tag}
+              </Tag>
+            ))}
           <Typography.Paragraph ellipsis={{ rows: 1 }}>
             {folder.description}
           </Typography.Paragraph>

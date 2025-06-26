@@ -1,5 +1,5 @@
 import { CheckOutlined } from "@ant-design/icons";
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input, message, Select } from "antd";
 import { createFolder, updateFolder } from "../../services/KnowledgeFolders";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
@@ -18,6 +18,7 @@ const FolderCreate: React.FC = () => {
       if (folder) {
         form.setFieldsValue({
           title: folder.title,
+          tags: folder.tags,
           description: folder.description,
         });
       }
@@ -69,6 +70,20 @@ const FolderCreate: React.FC = () => {
         rules={[{ required: true, message: "O título é obrigatório." }]}
       >
         <Input />
+      </Form.Item>
+      <Form.Item
+        name="tags"
+        label="Tags"
+        required
+        style={{ width: "100%" }}
+        rules={[{ required: true, message: "As tags são obrigatórias." }]}
+      >
+        <Select
+          mode="tags"
+          style={{ width: "100%" }}
+          placeholder="Tags Mode"
+          options={[]}
+        />
       </Form.Item>
       <Form.Item
         name="description"
