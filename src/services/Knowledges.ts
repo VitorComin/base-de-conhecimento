@@ -1,69 +1,50 @@
 import { IKnowledge } from "../types/KnowledgeTypes";
 
-let knowledges: IKnowledge[] = [
-  {
-    id: 1,
-    title: "conhecimento da pasta 1",
-    folderId: 1,
-    author: "Gabriel",
-    description: "descrição",
-  },
-  {
-    id: 2,
-    title: "conhecimento da pasta 1 (1)",
-    folderId: 1,
-    author: "Vitor",
-    description: "descrição",
-  },
-  {
-    id: 3,
-    title: "conhecimento da pasta 2 ",
-    folderId: 2,
-    author: "Daniel",
-    description: "descrição",
-  },
-  {
-    id: 4,
-    title: "conhecimento da pasta 2 (1)",
-    folderId: 2,
-    author: "Patrick",
-    description: "descrição",
-  },
-];
+const BASE_URL = "https://685c9013769de2bf085d0ff0.mockapi.io/knowledges";
 
-let nextId = 5;
-
-export function getKnowledges(): Promise<IKnowledge[]> {
-  return Promise.resolve(knowledges);
+export async function getKnowledges(): Promise<IKnowledge[]> {
+  const res = await fetch(BASE_URL);
+  if (!res.ok) throw new Error("Erro ao buscar conhecimentos");
+  return res.json();
 }
 
-export function getKnowledgeById(id: number): Promise<IKnowledge | undefined> {
-  return Promise.resolve(knowledges.find((k) => k.id === id));
+export async function getKnowledgeById(id: number): Promise<IKnowledge | null> {
+  const res = await fetch(`${BASE_URL}/${id}`);
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error("Erro ao buscar conhecimento");
+  return res.json();
 }
 
-export function createKnowledge(
+export async function createKnowledge(
   data: Omit<IKnowledge, "id">
 ): Promise<IKnowledge> {
-  const newKnowledge: IKnowledge = { id: nextId++, ...data };
-  knowledges.push(newKnowledge);
-  return Promise.resolve(newKnowledge);
+  const res = await fetch(BASE_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error("Erro ao criar conhecimento");
+  return res.json();
 }
 
-export function updateKnowledge(
+export async function updateKnowledge(
   id: number,
   data: Partial<Omit<IKnowledge, "id">>
 ): Promise<IKnowledge | null> {
-  const index = knowledges.findIndex((k) => k.id === id);
-  if (index === -1) return Promise.resolve(null);
-
-  knowledges[index] = { ...knowledges[index], ...data };
-  return Promise.resolve(knowledges[index]);
+  const res = await fetch(`${BASE_URL}/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error("Erro ao atualizar conhecimento");
+  return res.json();
 }
 
-export function deleteKnowledge(id: number): Promise<boolean> {
-  const index = knowledges.findIndex((k) => k.id === id);
-  if (index === -1) return Promise.resolve(false);
-
-  knowledges.splice(index, 1);
-  return Promise.resolve(true);
+export async function deleteKnowledge(id: number): Promise<boolean> {
+  const res = await fetch(`${BASE_URL}/${id}`, {
+    method: "DELETE",
+  });
+  if (!res.ok) throw new Error("Erro ao deletar conhecimento");
+  return true;
 }

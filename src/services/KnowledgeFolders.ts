@@ -1,44 +1,50 @@
 import { IFolder } from "../types/KnowledgeTypes";
 
-let knowledgeFolders: IFolder[] = [
-  { id: 1, title: "Pasta 1", description: "eita" },
-  { id: 2, title: "Pasta 2", description: "eita 2" },
-];
+const BASE_URL = "https://685c9013769de2bf085d0ff0.mockapi.io/folders";
 
-let nextId = 3;
-
-export function getFolders(): Promise<IFolder[]> {
-  return Promise.resolve(knowledgeFolders);
+export async function getFolders(): Promise<IFolder[]> {
+  const res = await fetch(BASE_URL);
+  if (!res.ok) throw new Error("Erro ao buscar pastas");
+  return res.json();
 }
 
-export function getFolderById(id: number): Promise<IFolder | undefined> {
-  return Promise.resolve(knowledgeFolders.find((f) => f.id === id));
+export async function getFolderById(id: number): Promise<IFolder | null> {
+  const res = await fetch(`${BASE_URL}/${id}`);
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error("Erro ao buscar pasta");
+  return res.json();
 }
 
-export function createFolder(data: Omit<IFolder, "id">): Promise<IFolder> {
-  const newFolder: IFolder = {
-    id: Math.floor(Math.random() * 1000000),
-    ...data,
-  };
-  knowledgeFolders.push(newFolder);
-  return Promise.resolve(newFolder);
+export async function createFolder(
+  data: Omit<IFolder, "id">
+): Promise<IFolder> {
+  const res = await fetch(BASE_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error("Erro ao criar pasta");
+  return res.json();
 }
 
-export function updateFolder(
+export async function updateFolder(
   id: number,
   data: Partial<Omit<IFolder, "id">>
 ): Promise<IFolder | null> {
-  const index = knowledgeFolders.findIndex((f) => f.id === id);
-  if (index === -1) return Promise.resolve(null);
-
-  knowledgeFolders[index] = { ...knowledgeFolders[index], ...data };
-  return Promise.resolve(knowledgeFolders[index]);
+  const res = await fetch(`${BASE_URL}/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error("Erro ao atualizar pasta");
+  return res.json();
 }
 
-export function deleteFolder(id: number): Promise<boolean> {
-  const index = knowledgeFolders.findIndex((f) => f.id === id);
-  if (index === -1) return Promise.resolve(false);
-
-  knowledgeFolders.splice(index, 1);
-  return Promise.resolve(true);
+export async function deleteFolder(id: number): Promise<boolean> {
+  const res = await fetch(`${BASE_URL}/${id}`, {
+    method: "DELETE",
+  });
+  if (!res.ok) throw new Error("Erro ao deletar pasta");
+  return true;
 }
